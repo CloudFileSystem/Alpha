@@ -8,9 +8,9 @@ class Grifone(Operations):
 	def __init__(self):
 		pass
 
-	# +============================
+	# +===============================================
 	# | Filesystem method
-	# +============================
+	# +===============================================
 	def access(self, path, mode):
 		raise FuseOSError(errno.EACCES)
 
@@ -60,9 +60,9 @@ class Grifone(Operations):
 	def utimens(self, path, times=None):
 		raise FuseOSError(errno.EACCES)
 
-	# +============================
+	# +===============================================
 	# | File method
-	# +============================
+	# +===============================================
 	def open(self, path, flags):
 		raise FuseOSError(errno.EACCES)
 
