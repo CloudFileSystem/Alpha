@@ -88,5 +88,6 @@ class Grifone(Operations):
 
 if __name__ == '__main__':
 	mntpoint = os.path.abspath('%s/../mnt' %(os.path.dirname(os.path.abspath(__file__))))
+	print "I will mount %s" %(mntpoint)
 	FUSE(Grifone(), mntpoint, foreground=True)
 

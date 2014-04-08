@@ -22,3 +22,10 @@ else
 	exit
 fi
 
+
+if [ -f mnt ]
+then
+	# add mkdir mnt
+	mkdir mnt
+fi
+
