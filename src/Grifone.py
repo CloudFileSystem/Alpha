@@ -1,8 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import os.path
 import errno
+import os.path
 from fuse import FUSE, FuseOSError, Operations
+
+#from grifone.metadata import MetadataManager
 
 class Grifone(Operations):
 	def __init__(self):
@@ -21,9 +23,6 @@ class Grifone(Operations):
 		raise FuseOSError(errno.EACCES)
 
 	def getattr(self, path, fh=None):
-		raise FuseOSError(errno.EACCES)
-
-	def getxattr(self, path, fh=None):
 		raise FuseOSError(errno.EACCES)
 
 	def readdir(self, path, fh):
