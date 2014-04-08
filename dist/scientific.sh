@@ -30,7 +30,7 @@ source ./bin/activate
 #
 # install virtualenv
 #
-pip install python-fuse
+pip install fuse-python
 
 # vim: set nu ts=2 autoindent : #
 
