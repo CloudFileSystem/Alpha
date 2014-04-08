@@ -1,17 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from __future__ import with_statement
-
-from errno import EACCES
-from os.path import realpath
-from sys import argv, exit
-from threading import Lock
-
-import os
-
+import os.path
 from fuse import FUSE, FuseOSError, Operations, LoggingMixIn
 
-class Loopback(LoggingMixIn, Operations):
+class Grifone(LoggingMixIn, Operations):
 	def __init__(self, root):
 		self.root = realpath(root)
 		self.rwlock = Lock()
@@ -85,10 +77,10 @@ class Loopback(LoggingMixIn, Operations):
 	utimens = os.utime
 
 	def write(self, path, data, offset, fh):
-		with self.rwlock:
-			os.lseek(fh, offset, 0)
-			return os.write(fh, data)
+		pass
 
 if __name__ == '__main__':
-	fuse = FUSE(Loopback(), argv[2], foreground=True)
+	pass
+	#print __FILE__
+	#fuse = FUSE(Grifone(), argv[2], foreground=True)
 
