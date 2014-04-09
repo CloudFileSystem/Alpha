@@ -4,7 +4,7 @@ import os, os.path
 from xml.etree import ElementTree
 from xml.etree.ElementTree import Element, SubElement, dump
 
-class MetadataManager:
+class MDML:
 	def __init__(self):
 		# Meta Data Markup language
 		self.mdml = Element('mdml')
@@ -15,7 +15,11 @@ class MetadataManager:
 		self.tree = SubElement(self.mdml, 'tree')
 
 		# node: this tag measn file or directory node
-		self.root = SubElement(self.mdml, 'node', name='/')
+		self.root = SubElement(self.tree, 'node')
+		self.root.set('name', '/')
+
+	def getRoot(self):
+		return self.root
 
 	def getNode(self, path):
 		# divide path, filename
@@ -26,13 +30,17 @@ class MetadataManager:
 		pathlist[0] = '/'
 		pathlist.remove('')
 
+		# if file exist
+		if len(filename) != 0:
+			pathlist.append(filename)
+
 		# discovery path resource
 		node	= self.root
 		nodes	= [node]
 		for pathname in pathlist:
 			# get element that match pathname
 			nodelist = [n for n in nodes if n.attrib['name'] == pathname]
-			if len(nodelist) == 0: return False
+			if len(nodelist) == 0: return None
 
 			node	= nodelist[0]
 			nodes	= node.findall('node')
@@ -41,10 +49,13 @@ class MetadataManager:
 		return node
 
 	def addNode(self, path, node):
+		# divide path, filename
+		path, filename = os.path.split(path)
+
 		# get path node
 		target_node = self.getNode(path)
-		if target_node == False:
-			return False
+		if target_node == None:
+			return None
 		# add node element
 		return SubElement(target_node, 'node', name=node)
 
