@@ -17,8 +17,10 @@ class Grifone(Operations):
 	# | Filesystem method
 	# +===============================================
 	def access(self, path, mode):
-		print "ACCESS: (path=%s, mode=%s)" %(path, mode)
-		raise FuseOSError(errno.EACCES)
+		node = self.metadata.getNode(path)
+		if node == None:
+			raise FuseOSError(errno.EACCES)
+		return 0
 
 	def chmod(self, path, mode):
 		print "CHMOD: (path=%s, mode=%s)" %(path, mode)
@@ -36,9 +38,7 @@ class Grifone(Operations):
 		return self.metadata.stat(node)
 
 	def readdir(self, path, fh):
-		print "READDIR: (path=%s, fh=%s)" %(path, fh)
-		raise FuseOSError(errno.EACCES)
-		#return ['.', '..'] + os.listdir(path)
+		return ['.', '..']
 
 	def readlink(self, path):
 		print "READLINK: (path=%s)" %(path, fh)
