@@ -34,11 +34,18 @@ class Grifone(Operations):
 		print "GETATTR: (path=%s, fh=%s)" %(path, fh)
 		node = self.metadata.getNode(path)
 		if node == None:
-			raise FuseOSError(errno.EACCES)
+			# No such file or directory
+			raise FuseOSError(errno.ENOENT)
 		return self.metadata.stat(node)
 
 	def readdir(self, path, fh):
-		return ['.', '..']
+		print "READDIR: (path=%s, fh=%s)" %(path, fh)
+
+		lists = self.metadata.getChildNodes(path)
+		lists.append('.')
+		lists.append('..')
+
+		return lists
 
 	def readlink(self, path):
 		print "READLINK: (path=%s)" %(path, fh)
@@ -50,7 +57,13 @@ class Grifone(Operations):
 
 	def mkdir(self, path, mode):
 		print "MKDIR: (path=%s, mode=%s)" %(path, mode)
-		raise FuseOSError(errno.EACCES)
+
+		path, name = os.path.split(path)
+		node = self.metadata.getNode(path)
+		if node == None:
+			raise FuseOSError(errno.EACCES)
+
+		self.metadata.make_directory(path, name)
 
 	def rmdir(self, path):
 		print "RMDIR: (path=%s)" %(path)
@@ -83,13 +96,18 @@ class Grifone(Operations):
 	# +===============================================
 	# | File method
 	# +===============================================
-	def open(self, path, flags):
-		print "OPEN: (path=%s, flags=%s)" %(path, times)
+	def open(self, path, flags, mode):
+		print "OPEN: (path=%s, flags=%s)" %(path, flags)
+
+		if flags & os.O_CREAT:
+			pass
+
 		raise FuseOSError(errno.EACCES)
 
 	def create(self, path, mode):
 		print "CREATE: (path=%s, mode=%s)" %(path, mode)
-		raise FuseOSError(errno.EACCES)
+		return self.open(path, os.O_WRONLY | os.O_CREAT, mode)
+		#raise FuseOSError(errno.EACCES)
 
 	def read(self, path, size, offset, fh):
 		print "READ: (path=%s, size=%s, offset=%s, fh=%s)" %(path, size, offset, fh)

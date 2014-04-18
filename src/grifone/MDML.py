@@ -48,7 +48,18 @@ class MDML:
 		# return find out node
 		return node
 
-	def addNode(self, path, node):
+	def getChildNodes(self, path):
+		node	= self.getNode(path)
+		if node == None:
+			return []
+
+		# get element that match pathname
+		nodelist = [n for n in node]
+		if len(nodelist) == 0: return []
+
+		return nodelist
+
+	def addNode(self, path, name):
 		# divide path, filename
 		path, filename = os.path.split(path)
 
@@ -57,13 +68,13 @@ class MDML:
 		if target_node == None:
 			return None
 		# add node element
-		return SubElement(target_node, 'node', name=node)
+		return SubElement(target_node, 'node', name=name)
 
 	def __str__(self):
 		return ElementTree.tostring(self.mdml)
 
 if __name__ == '__main__':
-	mm = MetadataManager()
+	mm = MDML()
 	print mm.addNode('/', 'bin')
 	print mm.addNode('/', 'etc')
 	print mm

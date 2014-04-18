@@ -14,13 +14,34 @@ class Metadata:
 		for key, value in stat.getStringItems():
 			root.set(key, value)
 
+		print self.mdml
+
 	def getNode(self, path):
 		return self.mdml.getNode(path)
+
+	def getChildNodes(self, path):
+		lists = []
+		nodes = self.mdml.getChildNodes(path)
+		for node in nodes:
+			lists.append(node.get('name'))
+		return lists
 
 	def stat(self, node):
 		stat = Stat()
 		stat.setStringItems(node)
 		return stat
+
+	def make_directory(self, path, name):
+		# initialize root directory
+		new_node = self.mdml.addNode(path, name)
+		if new_node == None:
+			return None
+
+		# initialize directory
+		stat = Stat().setDefaultContext().setDirectory()
+		for key, value in stat.getStringItems():
+			new_node.set(key, value)
+		return new_node
 
 if __name__ == '__main__':
 	meta = Metadata()
