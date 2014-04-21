@@ -23,7 +23,7 @@ else
 fi
 
 
-if [ -f mnt ]
+if [ -e mnt ]
 then
 	# add mkdir mnt
 	mkdir mnt
