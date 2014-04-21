@@ -14,8 +14,6 @@ class Metadata:
 		for key, value in stat.getStringItems():
 			root.set(key, value)
 
-		print self.mdml
-
 	def getNode(self, path):
 		return self.mdml.getNode(path)
 
@@ -42,6 +40,9 @@ class Metadata:
 		for key, value in stat.getStringItems():
 			new_node.set(key, value)
 		return new_node
+
+	def __str__(self):
+		return str(self.mdml)
 
 if __name__ == '__main__':
 	meta = Metadata()

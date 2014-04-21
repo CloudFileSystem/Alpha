@@ -33,6 +33,7 @@ class Grifone(Operations):
 	def getattr(self, path, fh=None):
 		print "GETATTR: (path=%s, fh=%s)" %(path, fh)
 		node = self.metadata.getNode(path)
+
 		if node == None:
 			# No such file or directory
 			raise FuseOSError(errno.ENOENT)
@@ -57,13 +58,11 @@ class Grifone(Operations):
 
 	def mkdir(self, path, mode):
 		print "MKDIR: (path=%s, mode=%s)" %(path, mode)
-
-		path, name = os.path.split(path)
+		basepath, name = os.path.split(path)
 		node = self.metadata.getNode(path)
-		if node == None:
+		if node != None:
 			raise FuseOSError(errno.EACCES)
-
-		self.metadata.make_directory(path, name)
+		self.metadata.make_directory(basepath, name)
 
 	def rmdir(self, path):
 		print "RMDIR: (path=%s)" %(path)

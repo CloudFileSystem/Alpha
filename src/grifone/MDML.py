@@ -28,15 +28,22 @@ class MDML:
 		# parse path
 		pathlist = path.split(os.sep)
 		pathlist[0] = '/'
-		pathlist.remove('')
+
+		try:
+			pathlist.remove('')
+		except:
+			pass
 
 		# if file exist
 		if len(filename) != 0:
 			pathlist.append(filename)
 
+		print pathlist
+
 		# discovery path resource
 		node	= self.root
 		nodes	= [node]
+
 		for pathname in pathlist:
 			# get element that match pathname
 			nodelist = [n for n in nodes if n.attrib['name'] == pathname]
@@ -60,9 +67,6 @@ class MDML:
 		return nodelist
 
 	def addNode(self, path, name):
-		# divide path, filename
-		path, filename = os.path.split(path)
-
 		# get path node
 		target_node = self.getNode(path)
 		if target_node == None:
