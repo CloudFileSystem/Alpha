@@ -38,8 +38,6 @@ class MDML:
 		if len(filename) != 0:
 			pathlist.append(filename)
 
-		print pathlist
-
 		# discovery path resource
 		node	= self.root
 		nodes	= [node]

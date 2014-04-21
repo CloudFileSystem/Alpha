@@ -97,7 +97,6 @@ class Grifone(Operations):
 	# +===============================================
 	def open(self, path, flags, mode):
 		print "OPEN: (path=%s, flags=%s)" %(path, flags)
-
 		if flags & os.O_CREAT:
 			pass
 
