@@ -18,7 +18,7 @@ class Stat:
 		self.st_ctime = 0
 
 	def setFile(self):
-		self.st_mode	= (stat.S_IFREG | 0444)
+		self.st_mode	= (stat.S_IFREG | 0644)
 		return self
 
 	def setDirectory(self):

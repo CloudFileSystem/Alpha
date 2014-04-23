@@ -12,6 +12,9 @@ class Grifone(Operations):
 	def __init__(self):
 		# initialize metadata
 		self.metadata = Metadata()
+		# file descriptor dictionary
+		self.fd_init = 10
+		self.fd_dict = dict()
 
 	# +===============================================
 	# | Filesystem method
@@ -102,6 +105,13 @@ class Grifone(Operations):
 		basepath, name = os.path.split(path)
 		if flags & os.O_CREAT:
 			self.metadata.make_file(basepath, name)
+
+		# file descriptor process
+		for i in range(self.fd_init, 4096):
+			new_fd = self.fd_dict.get(i)
+			if new_fd == None:
+				self.fd_dict[i] = path
+				return i
 		raise FuseOSError(errno.EACCES)
 
 	def create(self, path, mode):
@@ -113,20 +123,18 @@ class Grifone(Operations):
 		raise FuseOSError(errno.EACCES)
 
 	def write(self, path, data, offset, fh):
-		print "READ: (path=%s, data=%s, offset=%s, fh=%s)" %(path, data, offset, fh)
+		print "WRITE: (path=%s, data=%s, offset=%s, fh=%s)" %(path, data, offset, fh)
 		raise FuseOSError(errno.EACCES)
 
 	def truncate(self, path, length, fh=None):
-		print "READ: (path=%s, length=%s, fh=%s)" %(path, length, fh)
+		print "TRUNCATE: (path=%s, length=%s, fh=%s)" %(path, length, fh)
 		raise FuseOSError(errno.EACCES)
 
 	def flush(self, path, fh):
-		print "READ: (path=%s, fh=%s)" %(path, fh)
-		raise FuseOSError(errno.EACCES)
+		print "FLUSH: (path=%s, fh=%s)" %(path, fh)
 
 	def release(self, path, fh):
 		print "RELEASE: (path=%s, fh=%s)" %(path, fh)
-		raise FuseOSError(errno.EACCES)
 
 	def fsync(self, path, datasync, fh):
 		print "FSYNC: (path=%s, datasync, fh=%s)" %(path, datasync, fh)
