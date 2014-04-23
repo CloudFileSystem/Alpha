@@ -30,7 +30,7 @@ class Metadata:
 		return stat
 
 	def make_directory(self, path, name):
-		# initialize root directory
+		# make new node
 		new_node = self.mdml.addNode(path, name)
 		if new_node == None:
 			return None
@@ -40,6 +40,21 @@ class Metadata:
 		for key, value in stat.getStringItems():
 			new_node.set(key, value)
 		return new_node
+
+	def make_file(self, path, name):
+		# make new node
+		new_node = self.mdml.addNode(path, name)
+		if new_node == None:
+			return None
+
+		# initialize file
+		stat = Stat().setDefaultContext().setFile()
+		for key, value in stat.getStringItems():
+			new_node.set(key, value)
+		return new_node
+
+	def remove_directory(self, path, name):
+		self.mdml.removeNode(path, name)
 
 	def __str__(self):
 		return str(self.mdml)

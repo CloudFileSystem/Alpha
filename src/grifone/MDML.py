@@ -72,6 +72,16 @@ class MDML:
 		# add node element
 		return SubElement(target_node, 'node', name=name)
 
+	def removeNode(self, path, name):
+		# remove path node
+		basenode = self.getNode(path)
+		child_nodes = self.getChildNodes(path)
+		for child_node in child_nodes:
+			if child_node.get('name') == name:
+				basenode.remove(child_node)
+				return child_node
+		return None
+
 	def __str__(self):
 		return ElementTree.tostring(self.mdml)
 
@@ -79,5 +89,6 @@ if __name__ == '__main__':
 	mm = MDML()
 	print mm.addNode('/', 'bin')
 	print mm.addNode('/', 'etc')
+	print mm.removeNode('/', 'bin')
 	print mm
 

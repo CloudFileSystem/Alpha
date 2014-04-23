@@ -66,7 +66,8 @@ class Grifone(Operations):
 
 	def rmdir(self, path):
 		print "RMDIR: (path=%s)" %(path)
-		raise FuseOSError(errno.EACCES)
+		basepath, name = os.path.split(path)
+		self.metadata.remove_directory(basepath, name)
 
 	def statfs(self, path):
 		print "STATFS: (path=%s)" %(path)
@@ -90,22 +91,21 @@ class Grifone(Operations):
 
 	def utimens(self, path, times=None):
 		print "UTIMES: (path=%s, times=%s)" %(path, times)
-		raise FuseOSError(errno.EACCES)
+		#raise FuseOSError(errno.EACCES)
 
 	# +===============================================
 	# | File method
 	# +===============================================
 	def open(self, path, flags, mode):
 		print "OPEN: (path=%s, flags=%s)" %(path, flags)
+		basepath, name = os.path.split(path)
 		if flags & os.O_CREAT:
-			pass
-
+			self.metadata.make_file(basepath, name)
 		raise FuseOSError(errno.EACCES)
 
 	def create(self, path, mode):
 		print "CREATE: (path=%s, mode=%s)" %(path, mode)
 		return self.open(path, os.O_WRONLY | os.O_CREAT, mode)
-		#raise FuseOSError(errno.EACCES)
 
 	def read(self, path, size, offset, fh):
 		print "READ: (path=%s, size=%s, offset=%s, fh=%s)" %(path, size, offset, fh)
