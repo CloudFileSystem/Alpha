@@ -91,12 +91,13 @@ class Grifone(Operations):
 
 	def utimens(self, path, times=None):
 		print "UTIMES: (path=%s, times=%s)" %(path, times)
-		#raise FuseOSError(errno.EACCES)
+		self.metadata.update_times(path, times)
+		return 0
 
 	# +===============================================
 	# | File method
 	# +===============================================
-	def open(self, path, flags, mode):
+	def open(self, path, flags, mode=None):
 		print "OPEN: (path=%s, flags=%s)" %(path, flags)
 		basepath, name = os.path.split(path)
 		if flags & os.O_CREAT:

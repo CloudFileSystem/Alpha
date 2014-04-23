@@ -56,6 +56,14 @@ class Metadata:
 	def remove_directory(self, path, name):
 		self.mdml.removeNode(path, name)
 
+	def update_times(self, path, times):
+		node = self.mdml.getNode(path)
+		if node == None:
+			return None
+
+		node.set("st_atime", str(times[0]))
+		node.set("st_mtime", str(times[1]))
+
 	def __str__(self):
 		return str(self.mdml)
 

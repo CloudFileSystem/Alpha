@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import os
 import stat
+import time
 
 class Stat:
 	def __init__(self):
@@ -29,8 +30,12 @@ class Stat:
 		if uid == None: uid = os.geteuid()
 		if gid == None: gid = os.getgid()
 
+		# set user, group id
 		self.st_uid = uid
 		self.st_gid = gid
+
+		# set create time
+		self.st_ctime = time.time()
 
 		return self
 
@@ -64,17 +69,17 @@ class Stat:
 		)
 		return stats.items()
 
-	def setStringItems(self, items):
-		self.st_mode  = int(items.attrib.get("st_mode"))
-		self.st_ino   = int(items.attrib.get("st_ino"))
-		self.st_dev   = int(items.attrib.get("st_dev"))
-		self.st_nlink = int(items.attrib.get("st_nlink"))
-		self.st_uid   = int(items.attrib.get("st_uid"))
-		self.st_gid   = int(items.attrib.get("st_gid"))
-		self.st_size  = int(items.attrib.get("st_size"))
-		self.st_atime = int(items.attrib.get("st_atime"))
-		self.st_mtime = int(items.attrib.get("st_mtime"))
-		self.st_ctime = int(items.attrib.get("st_ctime"))
+	def setStringItems(self, item):
+		self.st_mode  = int(item.attrib.get("st_mode"))
+		self.st_ino   = int(item.attrib.get("st_ino"))
+		self.st_dev   = int(item.attrib.get("st_dev"))
+		self.st_nlink = int(item.attrib.get("st_nlink"))
+		self.st_uid   = int(item.attrib.get("st_uid"))
+		self.st_gid   = int(item.attrib.get("st_gid"))
+		self.st_size  = int(item.attrib.get("st_size"))
+		self.st_atime = float(item.attrib.get("st_atime"))
+		self.st_mtime = float(item.attrib.get("st_mtime"))
+		self.st_ctime = float(item.attrib.get("st_ctime"))
 
 	def __str__(self):
 		string = """
