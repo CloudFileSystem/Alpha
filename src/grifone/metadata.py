@@ -63,9 +63,16 @@ class Metadata:
 		node = self.mdml.getNode(path)
 		if node == None:
 			return None
-
+		# update time
 		node.set("st_atime", str(times[0]))
 		node.set("st_mtime", str(times[1]))
+
+	def update_size(self, path, size):
+		node = self.mdml.getNode(path)
+		if node == None:
+			return None
+		# update size
+		node.set("st_size", str(size))
 
 	def __str__(self):
 		return str(self.mdml)
