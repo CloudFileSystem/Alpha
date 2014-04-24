@@ -41,6 +41,9 @@ class Metadata:
 			new_node.set(key, value)
 		return new_node
 
+	def remove_directory(self, path, name):
+		self.mdml.removeNode(path, name)
+
 	def make_file(self, path, name):
 		# make new node
 		new_node = self.mdml.addNode(path, name)
@@ -53,7 +56,7 @@ class Metadata:
 			new_node.set(key, value)
 		return new_node
 
-	def remove_directory(self, path, name):
+	def remove_file(self, path, name):
 		self.mdml.removeNode(path, name)
 
 	def update_times(self, path, times):
