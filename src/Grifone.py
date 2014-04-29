@@ -148,10 +148,8 @@ class Grifone(Operations):
 		print "FSYNC: (path=%s, datasync=%s, fh=%s)" %(path, datasync, fh)
 
 if __name__ == '__main__':
-	os.setgid(1000)
-	os.setuid(1000)
-
 	mntpoint = os.path.abspath('%s/../mnt' %(os.path.dirname(os.path.abspath(__file__))))
 	print "I will mount %s" %(mntpoint)
-	FUSE(Grifone(), mntpoint, foreground=True, nonempty=True)
+	#FUSE(Grifone(), mntpoint, foreground=True, nonempty=True)
+	FUSE(Grifone(), mntpoint, foreground=True, nonempty=True, allow_other=True)
 

@@ -36,8 +36,8 @@ def main():
 	pypath = os.path.abspath(pyfile)
 
 	# switch user
-	os.setgid(1000)
-	os.setuid(1000)
+	#os.setgid(1000)
+	#os.setuid(1000)
 
 	# all seems ok - run our fuse fs as a child
 	if os.fork() == 0:

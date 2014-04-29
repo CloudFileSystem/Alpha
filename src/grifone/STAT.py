@@ -3,6 +3,7 @@
 import os
 import stat
 import time
+import fuse
 
 class Stat:
 	def __init__(self):
@@ -27,8 +28,10 @@ class Stat:
 		return self
 
 	def setDefaultContext(self, uid = None, gid = None):
-		if uid == None: uid = os.geteuid()
-		if gid == None: gid = os.getgid()
+		# get fuse context
+		fuid, fgid, fpid = fuse.fuse_get_context()
+		if uid == None: uid = fuid
+		if gid == None: gid = fgid
 
 		# set user, group id
 		self.st_uid = uid
