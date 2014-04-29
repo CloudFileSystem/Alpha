@@ -35,11 +35,14 @@ def main():
 	# get python file path
 	pypath = os.path.abspath(pyfile)
 
+	# switch user
+	os.setgid(1000)
+	os.setuid(1000)
+
 	# all seems ok - run our fuse fs as a child
 	if os.fork() == 0:
-		FUSE(Grifone(), mountpoint, foreground=True, nonempty=True, allow_other=True)
-	else:
-		pass
+		#FUSE(Grifone(), mountpoint, foreground=True, nonempty=True, allow_other=True)
+		FUSE(Grifone(), mountpoint, foreground=True, nonempty=True)
 
 if __name__ == '__main__':
 	main()
