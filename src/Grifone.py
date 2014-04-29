@@ -30,9 +30,11 @@ class Grifone(Operations):
 		print "CHMOD: (path=%s, mode=%s)" %(path, mode)
 		raise FuseOSError(errno.EACCES)
 
-	def chown(self, path, mode):
-		print "CHOWN: (path=%s, mode=%s)" %(path, mode)
-		raise FuseOSError(errno.EACCES)
+	def chown(self, path, uid, gid):
+		print "CHOWN: (path=%s, uid=%s, gid=%s)" %(path, uid, gid)
+		if self.metadata.change_ownership(path, uid, gid) == False:
+			raise FuseOSError(errno.ENOENT)
+		return 0
 
 	def getattr(self, path, fh=None):
 		print "GETATTR: (path=%s, fh=%s)" %(path, fh)
@@ -127,8 +129,9 @@ class Grifone(Operations):
 
 	def write(self, path, data, offset, fh):
 		print "WRITE: (path=%s, offset=%s, fh=%s)" %(path, offset, fh)
+
 		self.fd_buff[path] = data
-		print self.fd_buff
+		#print self.fd_buff
 
 		size = len(data)
 		self.metadata.update_size(path, size)
@@ -136,7 +139,6 @@ class Grifone(Operations):
 
 	def truncate(self, path, length, fh=None):
 		print "TRUNCATE: (path=%s, length=%s, fh=%s)" %(path, length, fh)
-		#raise FuseOSError(errno.EACCES)
 
 	def flush(self, path, fh):
 		print "FLUSH: (path=%s, fh=%s)" %(path, fh)

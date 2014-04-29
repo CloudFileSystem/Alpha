@@ -59,6 +59,15 @@ class Metadata:
 	def remove_file(self, path, name):
 		self.mdml.removeNode(path, name)
 
+	def change_ownership(self, path, uid, gid):
+		node = self.mdml.getNode(path)
+		if node == None:
+			return False
+		# update time
+		if uid != -1: node.set("st_uid", str(uid))
+		if gid != -1: node.set("st_gid", str(gid))
+		return True
+
 	def update_times(self, path, times):
 		node = self.mdml.getNode(path)
 		if node == None:
