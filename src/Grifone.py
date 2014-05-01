@@ -7,6 +7,7 @@ import errno
 from fuse import FUSE, FuseOSError, Operations
 
 from grifone.metadata import Metadata
+from struct import pack
 
 class Grifone(Operations):
 	def __init__(self):
@@ -124,17 +125,26 @@ class Grifone(Operations):
 
 	def read(self, path, size, offset, fh):
 		print "READ: (path=%s, size=%s, offset=%s, fh=%s)" %(path, size, offset, fh)
-		return self.fd_buff.get(path)
-		#raise FuseOSError(errno.EACCES)
+		datas = self.fd_buff.get(path)
+
+		if datas:
+			if len(datas) < size:
+				size = len(datas)
+			return str(datas[offset:offset + size])
+		return ''
 
 	def write(self, path, data, offset, fh):
 		print "WRITE: (path=%s, offset=%s, fh=%s)" %(path, offset, fh)
 
-		self.fd_buff[path] = data
-		#print self.fd_buff
+		datas = self.fd_buff.get(path)
+		if datas == None:
+			datas = self.fd_buff[path] = bytearray()
 
+		datas[offset:] = data[:]
 		size = len(data)
-		self.metadata.update_size(path, size)
+		filesize = len(datas)
+
+		self.metadata.update_size(path, filesize)
 		return size
 
 	def truncate(self, path, length, fh=None):

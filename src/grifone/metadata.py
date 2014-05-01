@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import os
 from MDML import MDML
 from STAT import Stat
 
@@ -10,7 +11,9 @@ class Metadata:
 
 		# initialize root directory
 		root = self.mdml.getRoot()
-		stat = Stat().setDefaultContext().setDirectory()
+		stat = Stat()
+		stat.setDefaultContext(os.getuid(), os.getgid())
+		stat.setDirectory()
 		for key, value in stat.getStringItems():
 			root.set(key, value)
 
