@@ -41,8 +41,8 @@ def main():
 
 	# all seems ok - run our fuse fs as a child
 	if os.fork() == 0:
-		#FUSE(Grifone(), mountpoint, foreground=True, nonempty=True, allow_other=True)
-		FUSE(Grifone(), mountpoint, foreground=True, nonempty=True)
+		FUSE(Grifone(), mountpoint, foreground=True, nonempty=True, allow_other=True)
+		#FUSE(Grifone(), mountpoint, foreground=True, nonempty=True)
 
 if __name__ == '__main__':
 	main()
